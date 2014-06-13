@@ -1,80 +1,19 @@
-function AntSystemAnt(antSystem) {
+function PSOParticle(pso) {
 
-	this.antSystem = antSystem;
-	this.solutionQuality = 0;
-	this.visitedNodes = [];
+	this.position = [];
+	this.velocity = [];
 	
-	var currentNodeIndex = -1;
+	this.bestPosition = [];
+	this.bestLocalValue = Number.MAX_VALUE;
 	
-	this.setNextCurrentNode = function(nodeIndex) {
-		currentNodeIndex = nodeIndex;
-		this.visitedNodes.push(nodeIndex);
-	};
+	this.pso = pso;
 	
-	this.clear = function() {
-		this.solutionQuality = 0;
-		this.visitedNodes.length = 0;
-		currentNodeIndex = 0;
-	};
-	
-	this.pickNextNode = function() {
-		var mapNodesKeys = [];
-		var mapNodesValues = [];
+	this.evaluate = function() {
+		var result = pso.evaluateFormula(this.position);
 		
-		var denominatorSum = 0;
-		for (var nodeIndex = 0; nodeIndex < this.antSystem.numberOfNodes; nodeIndex++) {
-			if (this.visitedNodes.indexOf(nodeIndex) == -1) {
-				var pheromoneValue = Math.pow(this.antSystem.pheromoneCosts[currentNodeIndex][nodeIndex], this.antSystem.alpha);
-				var heuristicValue = Math.pow(1 / this.antSystem.pathCosts[currentNodeIndex][nodeIndex], this.antSystem.beta);
-				
-				var totalValue = pheromoneValue * heuristicValue;
-				
-				denominatorSum += totalValue;
-				mapNodesKeys.push(nodeIndex);
-				mapNodesValues.push(totalValue);
-			}
-		}
-		
-		var randomValueChoosen = Math.random() * denominatorSum;
-		var probabilityAux = 0;
-		
-		var nextNodeIndex = -1;
-		for (var mapIndex = 0; mapIndex < mapNodesKeys.length; mapIndex++) {
-			var currentValue = mapNodesValues[mapIndex];
-			
-			if (randomValueChoosen >= probabilityAux && randomValueChoosen < (probabilityAux + currentValue)) {
-				nextNodeIndex = mapNodesKeys[mapIndex];
-				break;
-			}
-			
-			probabilityAux += currentValue;
-		}
-		
-		this.setNextCurrentNode(nextNodeIndex);
-	};
-	
-	this.calcSolutionQuality = function() {
-		this.solutionQuality = 0;
-		
-		for (var index = 0; index < (this.visitedNodes.length - 1); index++) {
-			this.solutionQuality += this.antSystem.pathCosts[this.visitedNodes[index]][this.visitedNodes[index+1]];
-		}
-	};
-	
-	this.getDepositedPheromone = function(nodeFromIndex, nodeToIndex) {
-		var indexFrom = this.visitedNodes.indexOf(nodeFromIndex);
-		
-		if ((indexFrom > 0 && this.visitedNodes[indexFrom-1] == nodeToIndex) || (indexFrom < (this.visitedNodes.length - 1) && this.visitedNodes[indexFrom+1] == nodeToIndex)) {
-			return this.antSystem.functionConstant / this.solutionQuality;
-		}
-		
-		return 0;
-	};
-	
-	this.getVisitedPath = function() {
-		var result = [];
-		for (var indexX = 0; indexX < this.visitedNodes.length; indexX++) {
-			result.push(this.visitedNodes[indexX]);
+		if (result < this.bestLocalValue) {
+			this.bestPosition = this.positions.slice(0);
+			this.bestLocalValue = result;
 		}
 		
 		return result;
@@ -82,118 +21,67 @@ function AntSystemAnt(antSystem) {
 	
 }
 
-function AntSystemSystem(numberOfNodes, numberOfAnts, initialPheromone, functionConstant, evaporationRate, alpha, beta) {
+function PSOSystem(numberOfParticles, numberOfIntervals, cCognitive, cSocial, positionRestriction) {
 	
-	var self = this;
+	this.positionRestriction = positionRestriction;
+	this.velocityRestriction = [];
 	
-	this.numberOfNodes = numberOfNodes;
+	this.componentCognitive = cCognitive;
+	this.componentSocial = cSocial;
 	
-	this.ants = [];
+	this.particles = [];
 	
-	this.initialPheromone = initialPheromone;
-	this.functionConstant = functionConstant;
-	this.evaporationRate = evaporationRate;
-	this.alpha = alpha;
-	this.beta = alpha;
-	this.pathCosts = [];
-	this.pheromoneCosts = [];
+	this.bestPosition = [];
+	this.bestValue = Number.MAX_VALUE;
 	
-	for (var index = 0; index < numberOfAnts; index++) {
-		this.ants.push(new AntSystemAnt(this));
-	}
-	
-	for (var index1 = 0; index1 < numberOfNodes; index1++) {
-		this.pathCosts.push([]);
-		this.pheromoneCosts.push([]);
-		for (var index2 = 0; index2 < numberOfNodes; index2++) {
-			this.pathCosts[index1].push(0);
-			this.pheromoneCosts[index1].push(0);
+	for (var index = 0; index < numberOfParticles; index++) {
+		var p = new PSOParticle(this);
+		for (var indexX = 0; indexX < positionRestriction.length; indexX++) {
+			p.position.push(0);
+			p.velocity.push(0);
 		}
+		
+		this.particles.push(p);
 	}
 	
-	var init = function() {
-		for (var index1 = 0; index1 < numberOfNodes; index1++) {
-			for (var index2 = 0; index2 < numberOfNodes; index2++) {
-				self.pheromoneCosts[index1][index2] = Math.random() * self.initialPheromone;
+	for (var index = 0; index < positionRestriction.length; index++) {
+		var v1 = (positionRestriction[index][0] - positionRestriction[index][1]) / numberOfIntervals;
+		var v2 = (positionRestriction[index][1] - positionRestriction[index][0]) / numberOfIntervals;
+		
+		this.velocityRestriction.push([v1, v2]);
+	}
+	
+	this.init = function() {
+		this.bestValue = Number.MAX_VALUE;
+	
+		for (var indexP = 0; indexP < this.particles.length; indexP++) {
+			for (var indexR = 0; indexR < this.positionRestriction.length; indexR++) {
+				this.particles[indexP].position[indexR] = this.positionRestriction[indexR][0] + Math.random() * (this.positionRestriction[indexR][1] - this.positionRestriction[indexR][0]);
+				this.particles[indexP].velocity[indexR] = this.velocityRestriction[indexR][0] + Math.random() * (this.velocityRestriction[indexR][1] - this.velocityRestriction[indexR][0]);
+			}
+			
+			var resultParticle = this.particles[indexP].evaluate();
+			if (resultParticle < this.bestValue) {
+				this.bestPosition = this.particles[indexP].slice(0);
+				this.bestValue = resultParticle;
 			}
 		}
 	};
 	
-	this.addPathCost = function(nodeFromIndex, nodeToIndex, cost) {
-		this.pathCosts[nodeFromIndex][nodeToIndex] = cost;
-		this.pathCosts[nodeToIndex][nodeFromIndex] = cost;
-	};
-	
-	this.execute = function(maxSteps, initialNodeIndex) {
-		var result = {iterations:[], maxPheromone: 0, bestPath: null};
+	this.execute = function(maxSteps) {
+		var counter = 0;
 		
 		init();
 		
-		var qualityValues = [];
-		var stepCounter = 0;
-		
-		while (stepCounter < maxSteps) {
-			result.iterations.push({ants: [], afterEvaporation: {}});
-			var resultIteration = result.iterations[stepCounter];
+		while (counter < maxSteps) {
+			counter++;
 			
-			for (var antIndex = 0; antIndex < numberOfAnts; antIndex++) {
-				var currentAnt = this.ants[antIndex];
-				currentAnt.clear();
-				currentAnt.setNextCurrentNode(initialNodeIndex);
-				
-				while (currentAnt.visitedNodes.length != numberOfNodes) {
-					currentAnt.pickNextNode();
-				}
-				
-				currentAnt.calcSolutionQuality();
-				
-				resultIteration.ants.push({result: currentAnt.getVisitedPath(), trails: {}});
-				qualityValues.push(currentAnt.solutionQuality);
-			}
-			
-			for (var index1 = 0; index1 < numberOfNodes; index1++) {
-				for (var index2 = 0; index2 < numberOfNodes; index2++) {
-					if (index1 != index2) {
-						this.pheromoneCosts[index1][index2] *= (1 - this.evaporationRate);
-						if (!resultIteration.afterEvaporation[index1]) {
-							resultIteration.afterEvaporation[index1] = {};
-						}
-						resultIteration.afterEvaporation[index1][index2] = this.pheromoneCosts[index1][index2]; 
-						
-						var depositedPheromone = 0;
-						for (var antIndex = 0; antIndex < numberOfAnts; antIndex++) {
-							var pheromoneLevel = this.ants[antIndex].getDepositedPheromone(index1, index2);
-							depositedPheromone += pheromoneLevel;
-							
-							var antTrails = resultIteration.ants[antIndex].trails;
-							if (!antTrails[index1]) {
-								antTrails[index1] = {};
-							}
-							
-							antTrails[index1][index2] = pheromoneLevel;
-						}
-						
-						this.pheromoneCosts[index1][index2] += depositedPheromone;
-						
-						if (result.maxPheromone < this.pheromoneCosts[index1][index2]) {
-							result.maxPheromone = this.pheromoneCosts[index1][index2];
-						}
-					}
+			for (var indexP = 0; indexP < this.particles.length; indexP++) {
+				for (var indexR = 0; indexR < this.positionRestriction.length; indexR++) {
+					
 				}
 			}
-			
-			stepCounter++;
 		}
-		
-		var minPathAntIndex = 0;
-		for (var antIndex = 1; antIndex < numberOfAnts; antIndex++) {
-			if (this.ants[antIndex].solutionQuality < this.ants[minPathAntIndex].solutionQuality) {
-				minPathAntIndex = antIndex;
-			}
-		}
-		
-		result.bestPath = this.ants[minPathAntIndex].getVisitedPath();
-		
-		return result;
-	}
+	};
+	
 }
