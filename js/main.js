@@ -79,7 +79,12 @@ $(document).ready(function(){
 		diffX = stage.canvas.width / (restrictionPositions[0][1] - restrictionPositions[0][0]);
 		diffY = stage.canvas.height / (restrictionPositions[1][1] - restrictionPositions[1][0]);
 		
-		psoSystem = new PSOSystem(numberOfParticles, numberOfIntervals, compCognitive, compSocial, restrictionPositions, formula, null);
+		var psoParams = {};
+		psoParams["WEIGHT_MIN"] = 0.4;
+		psoParams["WEIGHT_MAX"] = 0.9;
+		psoParams["CONSTRICTION"] = 0.729844;
+		
+		psoSystem = new PSOSystem(numberOfParticles, numberOfIntervals, compCognitive, compSocial, restrictionPositions, formula, psoParams);
 		resultPso = psoSystem.execute(numberOfIterations, psoType);
 		console.log(resultPso);
 		
