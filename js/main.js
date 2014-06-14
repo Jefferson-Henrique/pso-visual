@@ -9,6 +9,11 @@ $(document).ready(function(){
 	var panelResult = $("#panel-result");
 	var panelResultConfig = $(".panel-result-config");
 	
+	var resultSpan = $("#result-answer");
+	var resultSpanX = $("#result-answer-x");
+	var resultSpanY = $("#result-answer-y");
+	var resultSpanF = $("#result-answer-f");
+	
 	$("#resultCanvas").attr("width", panelResult.find(".panel-body").width() + "px");
 	$("#resultCanvas").attr("height", (panelConfigurations.outerHeight() - panelResultConfig.outerHeight()) + "px");
 	
@@ -49,6 +54,7 @@ $(document).ready(function(){
 	};
 	
 	btnExecute.click(function() {
+		resultSpan.show();
 		allParticles.length = 0;
 		containerParticles.removeAllChildren();
 		
@@ -82,6 +88,9 @@ $(document).ready(function(){
 			if (index < numberOfParticles) {
 				circle.graphics.beginStroke("black").beginFill("white").drawCircle(0, 0, 15);
 			} else {
+				resultSpanX.text(resultPso[index][0][0]);
+				resultSpanY.text(resultPso[index][0][1]);
+				resultSpanF.text(psoSystem.evaluateFormula(resultPso[index][0]));
 				circle.graphics.beginStroke("white").beginFill("blue").drawCircle(0, 0, 15);
 			}
 			
@@ -175,8 +184,10 @@ $(document).ready(function(){
 					
 					currentParticle._nextNode++;
 					
-					if (index == allParticles.length - 1) {
-						console.log(currentParticle.x + " - " + currentParticle.y);
+					if (index == (allParticles.length - 1)) {
+						resultSpanX.text(resultPso[index][currentParticle._nextNode-1][0]);
+						resultSpanY.text(resultPso[index][currentParticle._nextNode-1][1]);
+						resultSpanF.text(psoSystem.evaluateFormula(resultPso[index][currentParticle._nextNode-1]));
 					}
 				} else {
 					currentParticle.x += amountX;

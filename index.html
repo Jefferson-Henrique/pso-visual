@@ -56,7 +56,7 @@
 	      			<div class="panel-body">
 		      			<div class="row form-group">
 		      				<div class="col-sm-12">
-		      					<label class="control-label">Equação a ser minimizada <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> texto/string<br/><br/><span class='graco-popover-bold'>Info</span><br/>A partir dos dados serão criados os estados que as formigas irão percorrer.<br/><br/><span class='graco-popover-bold'>Exemplo de uso:</span><br/>Estado 1: X=100 e Y=200;<br />Estado 2: X=150 e Y=250;<br/><br/>Nesse exemplo o campo deveria ser preenchido com:<br/>100 200; 150 250" class="glyphicon glyphicon-info-sign"></label>
+		      					<label class="control-label">Função a ser minimizada <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> texto/string<br/><br/><span class='graco-popover-bold'>Info</span><br/>A partir dos dados serão criados os estados que as formigas irão percorrer.<br/><br/><span class='graco-popover-bold'>Exemplo de uso:</span><br/>Estado 1: X=100 e Y=200;<br />Estado 2: X=150 e Y=250;<br/><br/>Nesse exemplo o campo deveria ser preenchido com:<br/>100 200; 150 250" class="glyphicon glyphicon-info-sign"></label>
 						     	<textarea id="data-formula" class="form-control" rows="3" style="height: 100px">x^2 - x*y + y^2 - 3*y</textarea>
 		      				</div>
 		      			</div>
@@ -101,7 +101,7 @@
       		
       		<div class="col-sm-8 basic-column-right">
       			<div id="panel-result" class="panel panel-primary">
-	      			<div class="panel-heading">Resultado</div>
+	      			<div class="panel-heading">Resultado <span id="result-answer" style="display: none">- x = { <span id="result-answer-x"></span> } | y = { <span id="result-answer-y"></span> | F = { <span id="result-answer-f"></span>}</span></div>
 	      			<div class="panel-body">
 	      				<div class="panel-result-config">
    							<button type="button" id="btnExecute" class="btn btn-success"><span class="glyphicon glyphicon-play-circle"></span> Executar</button>
