@@ -56,45 +56,43 @@
 	      			<div class="panel-body">
 		      			<div class="row form-group">
 		      				<div class="col-sm-12">
-		      					<label class="control-label">Dados "posX posY;" <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> texto/string<br/><br/><span class='graco-popover-bold'>Info</span><br/>A partir dos dados serão criados os estados que as formigas irão percorrer.<br/><br/><span class='graco-popover-bold'>Exemplo de uso:</span><br/>Estado 1: X=100 e Y=200;<br />Estado 2: X=150 e Y=250;<br/><br/>Nesse exemplo o campo deveria ser preenchido com:<br/>100 200; 150 250" class="glyphicon glyphicon-info-sign"></label>
-						     	<textarea id="data-data" class="form-control" rows="3" style="height: 150px">50 50; 50 200;200 50; 300 300; 320 150; 400 280</textarea>
+		      					<label class="control-label">Equação a ser minimizada <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> texto/string<br/><br/><span class='graco-popover-bold'>Info</span><br/>A partir dos dados serão criados os estados que as formigas irão percorrer.<br/><br/><span class='graco-popover-bold'>Exemplo de uso:</span><br/>Estado 1: X=100 e Y=200;<br />Estado 2: X=150 e Y=250;<br/><br/>Nesse exemplo o campo deveria ser preenchido com:<br/>100 200; 150 250" class="glyphicon glyphicon-info-sign"></label>
+						     	<textarea id="data-formula" class="form-control" rows="3" style="height: 100px">x^2 - x*y + y^2 - 3*y</textarea>
 		      				</div>
 		      			</div>
 		      			
 		      			<div class="row form-group">
-		      				<div class="col-sm-4">
-		      					<label class="control-label">Formigas <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/inteiro<br/><br/><span class='graco-popover-bold'>Info</span><br/>Quantidade de formigas que serão utilizadas para encontrar a solução." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-number-of-ants" type="text" class="form-control" value="2">
+		      				<div class="col-sm-6">
+		      					<label class="control-label">Partículas <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/inteiro<br/><br/><span class='graco-popover-bold'>Info</span><br/>Quantidade de formigas que serão utilizadas para encontrar a solução." class="glyphicon glyphicon-info-sign"></label>
+		      					<input id="data-particles" type="text" class="form-control" value="8">
 		      				</div>
-		      				<div class="col-sm-4">
+		      				<div class="col-sm-6">
 		      					<label class="control-label">Iterações <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/inteiro<br/><br/><span class='graco-popover-bold'>Info</span><br/>Quantidade máxima de iterações para finalizar a execução do algoritmo." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-number-of-iterations" type="text" class="form-control" value="10">
-		      				</div>
-		      				<div class="col-sm-4">
-		      					<label class="control-label">Evaporação <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Número que indica quanto feromônio será removido a cada iteração." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-evaporation" type="text" class="form-control" value="0.5">
+		      					<input id="data-iterations" type="text" class="form-control" value="150">
 		      				</div>
 		      			</div>
 		      			
 		      			<div class="row form-group">
 		      				<div class="col-sm-6">
-		      					<label class="control-label">Feromônio inicial <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Indica a quantidade inicial de feromônio, após esse momento as formigas serão responsáveis por atualizar a trilha." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-initial-pheromone" type="text" class="form-control" value="0.1">
+		      					<label class="control-label">Comp. Cognitivo <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Indica a quantidade inicial de feromônio, após esse momento as formigas serão responsáveis por atualizar a trilha." class="glyphicon glyphicon-info-sign"></label>
+		      					<input id="data-comp-cognitive" type="text" class="form-control" value="2">
 		      				</div>
 		      				<div class="col-sm-6">
-		      					<label class="control-label">Constante <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Constante utilizada para avaliar quão bom foi um caminho encontrado pelas formigas. Geralmente são usados valores como: 10, 100, 1000." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-constant" type="text" class="form-control" value="100">
+		      					<label class="control-label">Comp. Social <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Constante utilizada para avaliar quão bom foi um caminho encontrado pelas formigas. Geralmente são usados valores como: 10, 100, 1000." class="glyphicon glyphicon-info-sign"></label>
+		      					<input id="data-comp-social" type="text" class="form-control" value="2">
 		      				</div>
 		      			</div>
 		      			
 		      			<div class="row form-group">
 		      				<div class="col-sm-6">
-		      					<label class="control-label">Alpha <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Expoente utilizado no valor atribuído à trilha de feromônio. Representa a importância do feromônio no algoritmo." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-alpha" type="text" class="form-control" value="1">
+		      					<label class="control-label">Restri. Posições <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Expoente utilizado no valor atribuído à trilha de feromônio. Representa a importância do feromônio no algoritmo." class="glyphicon glyphicon-info-sign"></label>
+		      					<input id="data-restriction-position" type="text" class="form-control" value="-6,8;-10,7">
 		      				</div>
 		      				<div class="col-sm-6">
-		      					<label class="control-label">Beta <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Expoente utilizado no valor atribuído à heurística utilizada. Representa a importância da heurística no algoritmo." class="glyphicon glyphicon-info-sign"></label>
-		      					<input id="data-beta" type="text" class="form-control" value="1">
+		      					<label class="control-label">Tipo de PSO <span data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="<span class='graco-popover-bold'>Tipo de entrada: </span> número/flutuante<br/><br/><span class='graco-popover-bold'>Info</span><br/>Expoente utilizado no valor atribuído à heurística utilizada. Representa a importância da heurística no algoritmo." class="glyphicon glyphicon-info-sign"></label>
+		      					<select id="data-psotype" class="form-control">
+		      						<option value="DEFAULT">Padrão</option>
+		      					</select>
 		      				</div>
 		      			</div>
 	      			</div>
@@ -103,13 +101,10 @@
       		
       		<div class="col-sm-8 basic-column-right">
       			<div id="panel-result" class="panel panel-primary">
-	      			<div class="panel-heading">Resultado<span id="result-iteration" style="display: none"> - Iteração <span id="result-iteration-current">1</span> de <span id="result-iteration-max">10</span><span id="result-iteration-best-info"> - Melhor caminho teve custo: <span id="result-iteration-best-info-cost"></span></span></span></div>
+	      			<div class="panel-heading">Resultado</div>
 	      			<div class="panel-body">
 	      				<div class="panel-result-config">
    							<button type="button" id="btnExecute" class="btn btn-success"><span class="glyphicon glyphicon-play-circle"></span> Executar</button>
-   							<button type="button" id="btnDepositPheromone" class="btn btn-success disabled">Depositar Feromônio</button>
-   							<button type="button" id="btnNextIteration" class="btn btn-success disabled">Próxima iteração</button>
-   							<button type="button" id="btnShowBestPath" style="display: none" class="btn btn-success" style="display: none">Mostrar melhor caminho</button>
 	      				</div>
 						<canvas id="resultCanvas"></canvas>
 					</div>
@@ -127,7 +122,8 @@
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/easeljs-0.7.1.min.js"></script>
-    <script src="js/antsystem.js"></script>
-    <script src="js/graco.js"></script>
+    <script src="js/parser.js"></script>
+    <script src="js/pso.js"></script>
+    <script src="js/main.js"></script>
 
 </body></html>
